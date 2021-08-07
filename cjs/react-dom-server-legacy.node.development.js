@@ -5235,15 +5235,35 @@ function shouldConstruct$1(Component) {
   return Component.prototype && Component.prototype.isReactComponent;
 }
 
+function invalidRenderResult(type) {
+  {
+    {
+      throw Error( (getComponentNameFromType(type) || 'Component') + "(...): Nothing was returned from render. This usually means a return statement is missing. Or, to render nothing, return null." );
+    }
+  }
+}
+
 function renderWithHooks(request, task, Component, props, secondArg) {
   var componentIdentity = {};
   prepareToUseHooks(componentIdentity);
   var result = Component(props, secondArg);
-  return finishHooks(Component, props, result, secondArg);
+  var children = finishHooks(Component, props, result, secondArg);
+
+  if (children === undefined) {
+    invalidRenderResult(Component);
+  }
+
+  return children;
 }
 
 function finishClassComponent(request, task, instance, Component, props) {
   var nextChildren = instance.render();
+
+  if (nextChildren === undefined) {
+    if ( instance.render._isMockFunction) ; else {
+      invalidRenderResult(Component);
+    }
+  }
 
   {
     if (instance.props !== props) {
@@ -5923,11 +5943,7 @@ function finishedTask(request, boundary, segment) {
       // This must have been the last segment we were waiting on. This boundary is now complete.
       if (segment.parentFlushed) {
         // Our parent segment already flushed, so we need to schedule this segment to be emitted.
-        // If it is a segment that was aborted, we'll write other content instead so we don't need
-        // to emit it.
-        if (segment.status === COMPLETED) {
-          boundary.completedSegments.push(segment);
-        }
+        boundary.completedSegments.push(segment);
       }
 
       if (boundary.parentFlushed) {
@@ -5944,19 +5960,15 @@ function finishedTask(request, boundary, segment) {
     } else {
       if (segment.parentFlushed) {
         // Our parent already flushed, so we need to schedule this segment to be emitted.
-        // If it is a segment that was aborted, we'll write other content instead so we don't need
-        // to emit it.
-        if (segment.status === COMPLETED) {
-          var completedSegments = boundary.completedSegments;
-          completedSegments.push(segment);
+        var completedSegments = boundary.completedSegments;
+        completedSegments.push(segment);
 
-          if (completedSegments.length === 1) {
-            // This is the first time since we last flushed that we completed anything.
-            // We can schedule this boundary to emit its partially completed segments early
-            // in case the parent has already been flushed.
-            if (boundary.parentFlushed) {
-              request.partialBoundaries.push(boundary);
-            }
+        if (completedSegments.length === 1) {
+          // This is the first time since we last flushed that we completed anything.
+          // We can schedule this boundary to emit its partially completed segments early
+          // in case the parent has already been flushed.
+          if (boundary.parentFlushed) {
+            request.partialBoundaries.push(boundary);
           }
         }
       }
@@ -6116,7 +6128,7 @@ function flushSubtree(request, destination, segment) {
       {
         {
           {
-            throw Error( "Aborted, errored or already flushed boundaries should not be flushed again. This is a bug in React." );
+            throw Error( "Errored or already flushed boundaries should not be flushed again. This is a bug in React." );
           }
         }
       }
@@ -6147,7 +6159,7 @@ function flushSegment(request, destination, segment) {
     boundary.rootSegmentID = request.nextSegmentId++;
 
     if (boundary.completedSegments.length > 0) {
-      // If this is at least partially complete, we can queue it to be partially emitted early.
+      // If this is at least partially complete, we can queue it to be partially emmitted early.
       request.partialBoundaries.push(boundary);
     }
 
@@ -6406,7 +6418,7 @@ function abort(request) {
   }
 }
 
-var ReactVersion = '18.0.0-b9934d6db-20210805';
+var ReactVersion = '18.0.0-ed6c091fe-20210701';
 
 function onError() {// Non-fatal errors are ignored.
 }
