@@ -1185,14 +1185,7 @@
   var getFiberCurrentPropsFromNode = EventInternals[2];
   var enqueueStateRestore = EventInternals[3];
   var restoreStateIfNeeded = EventInternals[4];
-  var batchedUpdates = EventInternals[5];
-  var act_notBatchedInLegacyMode = React.unstable_act;
-
-  function act(callback) {
-    return act_notBatchedInLegacyMode(function () {
-      return batchedUpdates(callback);
-    });
-  }
+  var act = React.unstable_act;
 
   function Event(suffix) {}
 
