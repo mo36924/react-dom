@@ -243,7 +243,7 @@ reservedProps.forEach(function (name) {
 // In React, we let users pass `true` and `false` even though technically
 // these aren't boolean attributes (they are coerced to strings).
 
-['contentEditable', 'draggable', 'spellCheck', 'value'].forEach(function (name) {
+['charSet', 'contentEditable', 'draggable', 'spellCheck', 'value'].forEach(function (name) {
   properties[name] = new PropertyInfoRecord(name, BOOLEANISH_STRING, false, // mustUseProperty
   name.toLowerCase(), // attributeName
   null, // attributeNamespace

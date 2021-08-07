@@ -32,22 +32,22 @@ writeFileSync(
   )
 );
 
-// for (const path of [
-//   "cjs/react-dom-server-legacy.node.development.js",
-//   "cjs/react-dom-server-legacy.node.production.min.js",
-//   "cjs/react-dom-server.node.development.js",
-//   "cjs/react-dom-server.node.production.min.js",
-// ]) {
-//   writeFileSync(
-//     path,
-//     readFileSync(path, "utf8")
-//       .replace(
-//         '["contentEditable","draggable","spellCheck","value"]',
-//         (m) => `["charSet",${m.slice(1)}`
-//       )
-//       .replace(
-//         "['contentEditable', 'draggable', 'spellCheck', 'value']",
-//         (m) => `['charSet', ${m.slice(1)}`
-//       )
-//   );
-// }
+for (const path of [
+  "cjs/react-dom-server-legacy.node.development.js",
+  "cjs/react-dom-server-legacy.node.production.min.js",
+  "cjs/react-dom-server.node.development.js",
+  "cjs/react-dom-server.node.production.min.js",
+]) {
+  writeFileSync(
+    path,
+    readFileSync(path, "utf8")
+      .replace(
+        '["contentEditable","draggable","spellCheck","value"]',
+        (m) => `["charSet",${m.slice(1)}`
+      )
+      .replace(
+        "['contentEditable', 'draggable', 'spellCheck', 'value']",
+        (m) => `['charSet', ${m.slice(1)}`
+      )
+  );
+}
