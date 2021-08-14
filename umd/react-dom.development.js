@@ -11634,7 +11634,7 @@
   /*   */
   4;
 
-  var ReactVersion = '18.0.0-b9934d6db-20210805';
+  var ReactVersion = '18.0.0-e4e8226c6-20210812';
 
   var SCHEDULING_PROFILER_VERSION = 1;
 

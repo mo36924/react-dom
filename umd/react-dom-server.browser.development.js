@@ -12,7 +12,7 @@
   (global = global || self, factory(global.ReactDOMServer = {}, global.React));
 }(this, (function (exports, React) { 'use strict';
 
-  var ReactVersion = '18.0.0-b9934d6db-20210805';
+  var ReactVersion = '18.0.0-e4e8226c6-20210812';
 
   var ReactInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
   var _assign = ReactInternals.assign;
